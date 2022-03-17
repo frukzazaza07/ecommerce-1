@@ -1,0 +1,86 @@
+:root {
+    --padding-content--: 1.725rem;
+    --font-size-body-0_8em: .8em;
+    --font-size-body-1rem: 1rem;
+
+}
+
+.promotionsOfWeek-container {
+    margin-top: 5rem;
+    text-align: center;
+}
+
+.promotionsOfWeek-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* ตำแหน่ง / ตำแหน่ง / rows / colrums  */
+    gap: 20px;
+    padding: 0px 25px;
+    /* height: 85vh; */
+    margin-top: 1.5rem;
+}
+
+.promotionsOfWeek-main {
+    padding: var(--padding-content--);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    object-fit: cover;
+    background-repeat: no-repeat;
+}
+
+.promotionsOfWeek-main:first-child {
+    align-items: center;
+    cursor: pointer;
+}
+
+.promotionsOfWeek-body {
+    font-size: var(--font-size-body-small);
+}
+
+.promotionsOfWeek-main:first-child .promotionsOfWeek-body {
+    gap: 20px;
+    display: grid;
+    color: #fff;
+    font-weight: 400;
+    font-size: var(--font-size-body-medium);
+}
+
+.productList-main {
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.productList-main:hover {
+    transform: scale(1.2);
+}
+
+.productList-header-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.productList-header {
+    max-width: 50%;
+    margin: 0px auto;
+}
+
+.productList-header img {
+    min-height: 80px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.productList-body {
+    font-weight: 600;
+    font-size: var(--font-size-body-1rem);
+}
+
+.productPrice-textDecoration {
+    text-decoration: line-through;
+}
+
+.productListDetail-productDetail {
+    font-weight: normal;
+    font-size: var(--font-size-body-0_8em) !important;
+}

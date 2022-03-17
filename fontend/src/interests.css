@@ -1,0 +1,22 @@
+.interests-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(23%, 1fr));
+    gap: 20px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 40px 0px;
+}
+
+.interests-header {
+    font-size: 3rem;
+}
+
+.interests-main {
+    text-align: center;
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.interests-main:hover {
+    transform: scale(1.2);
+}

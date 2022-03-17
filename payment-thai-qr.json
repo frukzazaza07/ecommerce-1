@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "3e60f150-3c11-47cf-9583-4f0a1f8341ca",
+		"name": "QR Payment - Thai QR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. /partners/sandbox/v1/oauth/token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0f7894e9-495d-4c1f-a35e-127a4e68a510",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "resourceOwnerId",
+						"value": "<Your API Key>",
+						"type": "text"
+					},
+					{
+						"key": "requestUId",
+						"value": "{{$guid}}",
+						"type": "text"
+					},
+					{
+						"key": "accept-language",
+						"value": "EN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"applicationKey\" : \"<Your API Key>\",\r\n\t\"applicationSecret\" : \"<Your API Secret>\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"oauth",
+						"token"
+					]
+				},
+				"description": "POST /partners/v1/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "2. /partners/sandbox/v1/payment/qrcode/create - QR30",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "Bearer <Your Access Token>"
+					},
+					{
+						"key": "resourceOwnerId",
+						"type": "text",
+						"value": "<Your API Key>"
+					},
+					{
+						"key": "requestUId",
+						"type": "text",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "accept-language",
+						"type": "text",
+						"value": "EN"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\t\"qrType\": \"PP\", \r\n\t\"ppType\": \"BILLERID\", \r\n\t\"ppId\": \"<Your Biller ID>\", \r\n\t\"amount\": \"<Transaction Amount>\", \r\n\t\"ref1\": \"<Reference 1>\", \r\n\t\"ref2\": \"<Reference 2>\", \r\n\t\"ref3\": \"<Your Prefix Code>\" \r\n}"
+				},
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"payment",
+						"qrcode",
+						"create"
+					]
+				},
+				"description": "POST /partners/v1/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "2. /partners/sandbox/v1/payment/qrcode/create - QRCS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer <Your Access Token>",
+						"type": "text"
+					},
+					{
+						"key": "resourceOwnerId",
+						"type": "text",
+						"value": "<Your API Key>"
+					},
+					{
+						"key": "requestUId",
+						"type": "text",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "accept-language",
+						"type": "text",
+						"value": "EN"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"qrType\": \"CS\",\r\n\t\"merchantId\": \"<Your Merchant ID>\",\r\n\t\"terminalId\": \"<Your Terminal Id>\",\r\n\t\"invoice\": \"<Unique Transaction Reference Number>\",\r\n\t\"amount\": \"<Transaction Amount>\",\r\n\t\"csExtExpiryTime\" : \"<Expiry Time>\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"payment",
+						"qrcode",
+						"create"
+					]
+				},
+				"description": "POST /partners/v1/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "2. /partners/sandbox/v1/payment/qrcode/create - QR30 & QRCS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "Bearer <Your Access Token>"
+					},
+					{
+						"key": "resourceOwnerId",
+						"type": "text",
+						"value": "<Your API Key>"
+					},
+					{
+						"key": "requestUId",
+						"type": "text",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "accept-language",
+						"type": "text",
+						"value": "EN"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\t\"qrType\": \"PPCS\", \r\n\t\"ppType\": \"BILLERID\", \r\n\t\"ppId\": \"<Your Biller ID>\", \r\n\t\"amount\": \"<Transaction Amount>\", \r\n\t\"ref1\": \"<Reference 1>\", \r\n\t\"ref2\": \"<Reference 2>\", \r\n\t\"ref3\": \"<Your Prefix Code>\",\r\n\t\"merchantId\": \"<Your Merchant ID>\",\r\n\t\"terminalId\": \"<Your Terminal Id>\",\r\n\t\"invoice\": \"<Unique Transaction Reference Number>\",\r\n\t\"csExtExpiryTime\" : \"<Expiry Time>\"\t\r\n}"
+				},
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"payment",
+						"qrcode",
+						"create"
+					]
+				},
+				"description": "POST /partners/v1/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "3. /partners/sandbox/v1/payment/billpayment/transactions/{transRef} - Slip Verification",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3e542aa9-c86f-422d-83af-995348e8237f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "Bearer <Your Access Token>"
+					},
+					{
+						"key": "requestUID",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "resourceOwnerID",
+						"value": "<Your API Key>"
+					},
+					{
+						"key": "accept-language",
+						"type": "text",
+						"value": "EN"
+					}
+				],
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/{transRef}?sendingBank=014",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"payment",
+						"billpayment",
+						"transactions",
+						"{transRef}"
+					],
+					"query": [
+						{
+							"key": "sendingBank",
+							"value": "014"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. /partners/sandbox/v1/payment/qrcode/creditcard/{qrId} - Payment Transaction Inquiry",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3e542aa9-c86f-422d-83af-995348e8237f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "Bearer <Your Access Token>"
+					},
+					{
+						"key": "requestUID",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "resourceOwnerID",
+						"value": "<Your API Key>"
+					},
+					{
+						"key": "accept-language",
+						"type": "text",
+						"value": "EN"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/creditcard/{qrId}",
+					"protocol": "https",
+					"host": [
+						"api-sandbox",
+						"partners",
+						"scb"
+					],
+					"path": [
+						"partners",
+						"sandbox",
+						"v1",
+						"payment",
+						"qrcode",
+						"creditcard",
+						"{qrId}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f73d0d4a-512e-4f45-ae50-d2362eb1d1cf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2ee64aab-04b4-4434-befd-0d943cc73cc0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "519b7973-1a11-4c68-aaf9-e3d878e14faa",
+			"key": "api_host",
+			"value": "api-uat.scb.co.th",
+			"type": "string"
+		},
+		{
+			"id": "a2efea6a-e274-430f-86d7-73519bd835d8",
+			"key": "client_key",
+			"value": "l7f7b936ead92e4c5b87241cf9cca7565a",
+			"type": "string"
+		},
+		{
+			"id": "89c2af8c-90fd-483f-af0c-828a246469c5",
+			"key": "client_secret",
+			"value": "4d9bfc84e6674672baf4e462f4541e8c",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

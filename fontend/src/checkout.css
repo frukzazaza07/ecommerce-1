@@ -1,0 +1,288 @@
+.checkout-container {
+    padding: 0 5%;
+}
+
+.checkout-wrapper {
+    padding: 2rem 5%;
+    display: grid;
+    grid-template-columns: 52% 1fr;
+    /* gap: 20px; */
+    width: 100%;
+}
+
+.checkout-left {
+    border-right: 1px solid #d4d4d4;
+    padding: 0px 15px 0px 0px;
+}
+
+.checkout-left-header {
+    margin-bottom: 2rem;
+}
+
+.checkout-left-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-group-wrapper h4 {
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    position: relative;
+    margin: .7rem 0px;
+}
+
+.form-input {
+    border: 1px solid #d4d4d4;
+    background-clip: padding-box;
+    border-radius: 5px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1.2em 0.7857142857em .9em 0.7857142857em;
+    word-break: normal;
+    line-height: inherit;
+    background-color: rgba(255, 255, 255, 0);
+    color: #333333;
+    border-color: #d9d9d9;
+    min-height: 44px;
+    transition: all 0.4s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #1878b9;
+    box-shadow: 0 0 0 1px #1878b9;
+}
+
+label {
+    position: absolute;
+    transition: 0.2s all;
+    cursor: text;
+    left: 0.7857142857em;
+    display: inline;
+    z-index: -1;
+    transition: all 0.4s;
+    top: 50%;
+    color: #d3d3d3;
+    transform: translate(-0%, -50%);
+    font-size: 1rem;
+}
+
+/* 
+วิธีการที่ตัวนี้ทำ action อะไรซักอย่าง แล้วทำให้อีกตัวเกิดการเปลี่ยนแปลง
+input ทำ action label เปลีย่นแปลง
+.form-input:focus+label, 
+.form-input:active+label
+.form-input:invalid // ใช้คู่กับ minlength maxlength เพื่อให้ select input ที่ minlength ไม่ถึงที่กำหนด (ก็คือตัวที่มีการพิมพ์) และ ไม่ให้่พิมพ์เกิน maxlength
+ */
+.form-input:invalid+label {
+    transform: translate(-0%, -0%);
+    top: 2px;
+    font-size: .8rem;
+    color: #00dd22;
+    z-index: 10;
+    background-color: #fff;
+}
+
+.input-label-active {
+    transform: translate(-0%, -0%);
+    top: 2px;
+    font-size: .8rem;
+    color: #00dd22;
+    z-index: 10;
+    background-color: #fff;
+}
+
+.form-input-inline {
+    display: grid;
+}
+
+.size-item-8020 {
+    grid-template-columns: 75% 1fr !important;
+}
+
+.item-group-2 {
+    gap: 10px;
+    grid-template-columns: repeat(2, auto);
+}
+
+.item-group-1 {
+    grid-template-columns: 100%;
+}
+
+.item-group-3 {
+    gap: 10px;
+    grid-template-columns: repeat(3, auto);
+}
+
+.checkout-right {
+    padding: 0px 0px 0px 15px;
+    border-left: 1px solid #d4d4d4;
+    color: #4d4d4d;
+}
+
+.checkout-right-header {
+    max-height: 300px;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.checkout-right-footter {
+    border-top: 1px solid #d4d4d4;
+}
+
+.price-detail-1 {
+    border-bottom: 2px solid #d4d4d4;
+    font-size: .9rem;
+}
+
+.price-detail-2 {
+    font-size: var(--font-size-body-1rem);
+}
+
+.price-detail-1 {
+    padding: 1.7rem .5rem;
+}
+
+.price-detail-2 {
+    padding: 1.5rem .5rem;
+}
+
+.price-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.price-main:last-child {
+    margin-bottom: 0;
+}
+
+.navigator-detail-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.navigator-main {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.navigator-item {
+    opacity: 0.8;
+    transition: all .3s;
+}
+
+.navigator-item span {
+    cursor: pointer;
+}
+
+.navigator-item-active {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.navigator-item svg {
+    font-size: var(--font-size-body-08);
+    color: #4d4d4d;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step-active {
+    display: block !important;
+}
+
+/* scroll bar */
+/* width */
+.checkout-right-header::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track ตัวพื้นที่ */
+.checkout-right-header::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle (ตัวเลื่อน) */
+.checkout-right-header::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.checkout-right-header::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.address-wrapper {
+    border: 1px solid #d4d4d4;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.address-wrapper h3 {
+    position: absolute;
+    top: -18px;
+    background: #fff;
+}
+
+.address-group {
+    display: grid;
+    gap: 5px;
+    padding: 1rem;
+}
+
+.shipping-container {
+    list-style: none;
+    display: grid;
+}
+
+.shipping-container li {
+    padding: 1rem;
+    transition: all .3s;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.shipping-container li:first-child {
+    margin-top: 8px;
+}
+
+.shipping-container li:last-child {
+    border-bottom: none;
+}
+
+.shipping-container li:hover {
+    background: rgba(12, 8, 212, 0.8);
+    color: #fff;
+}
+
+.shipping-choice-active {
+    background: rgba(12, 8, 212, 0.8);
+    color: #fff;
+}
+
+.payment-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.payment-list-label {
+    top: 0 !important;
+    left: 0 !important;
+    color: #555 !important;
+    transform: translate(0%, 0%);
+    margin-left: 3px;
+    font-weight: 600;
+}

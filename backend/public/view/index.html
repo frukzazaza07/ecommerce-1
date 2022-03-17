@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/main.css" />
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <title>My girl friend.</title>
+</head>
+
+<body>
+  <div id="mydiv">
+  </div>
+  <!-- Load React. -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Load our React component. -->
+  <!-- <script src="../js/myReact.js" type="text/babel"></script>
+  <script src="../js/myReact1.js" type="text/babel"></script> -->
+
+  <script type="text/babel">
+    class Navbar extends React.Component {
+            render() {
+              return <nav class="nav-container">
+                        <div class="nav-main container-main">
+                          <div class="nav-logo">
+                            <h4>My girl friend</h4>
+                          </div>
+                          <ul class="nav-menu">
+                            <li class="nav-menu-list">แฟน1</li>
+                            <li class="nav-menu-list">แฟน1</li>
+                            <li class="nav-menu-list">แฟน1</li>
+                          </ul>  
+                        </div>
+                     </nav>
+            }
+    }
+    class NavbarMobile extends React.Component {
+            render() {
+              return <nav class="nav-container-mobile container-main">
+                        <div class="nav-main container-main-mobile">
+                          <div class="nav-left">                          
+                            <div class="nav-logo">
+                              <h4>My girl friend</h4>
+                            </div>
+                          </div>
+                          <div class="nav-right">
+                            <i class="fas fa-bars"></i>
+                          </div>
+                        </div>
+                     </nav>
+            }
+    }
+    class Article extends React.Component {
+      render() {
+              return <article class="article-container">
+                        <div class="article-main container-main">
+                          <div class="article-left">
+                            <h4>My girl friend</h4>
+                          </div>
+                          <div class="article-right">
+                            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, laborum.</h5>
+                          </div>  
+                        </div>
+                     </article>
+            }
+    }
+    class Content1 extends React.Component {
+      render() {
+              return <article class="content1-container">
+                        <div class="content1-main container-main">
+                          <div class="content1-header my-border-bottom">
+                            <h2>About me</h2>
+                          </div>
+                          <div class="content1-body">
+                            <a href="#" class="content1-body-item content1-body-item-mobile p-1rem">
+                              <div class="content1-body-item-header content1-body-item-header-indy">
+                                <img class="content1-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content1-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae aspernatur corrupti harum consectetur, ratione illo?</p>
+                              </div>
+                              <div class="content1-body-item-footer">
+                              
+                              </div> 
+                            </a>
+                            <a href="#" class="content1-body-item-mobile p-1rem">
+                              <div class="content1-body-item-header">
+                                <img class="content1-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content1-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, laborum.</p>
+                              </div>
+                              <div class="content1-body-item-footer">
+                              </div>   
+                            </a>
+                            <a href="#" class="content1-body-item-mobile p-1rem">
+                              <div class="content1-body-item-header">
+                                <img class="content1-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content1-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, laborum.</p>
+                              </div>
+                              <div class="content1-body-item-footer">
+                              
+                              </div>   
+                            </a>
+                          </div>  
+                        </div>
+                     </article>
+            }
+    }
+    class Content2 extends React.Component {
+       myData = [];
+      constructor(props) { 
+        super(props);
+        this.state = {
+            name: 'J',
+            apppVersion: '1',
+            data: [],
+        }   
+       }
+      async getDogecoinPrice() {
+        const { data } = await axios.get(
+          "https://nitinr-cors.herokuapp.com/https://api.wazirx.com/api/v2/tickers/dogeusdt"
+        );
+        // console.log(data);
+        this.state.data = data;
+        console.log(this.state.data);
+      };
+      
+       render() {
+         this.getDogecoinPrice();
+        console.log(this.state.data);
+              return <article class="content2-container">
+                        <div class="content2-main container-main">
+                          <div class="content2-header my-border-bottom">
+                            <h2>About my girl friend</h2>
+                          </div>
+                          <div class="content2-body">
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            <a href="#" class="content2-body-item">
+                              <div class="content2-body-item-header">
+                                <img class="content2-img" src="./uploads/img/รูปจบ.jpg" />
+                              </div>
+                              <div class="content2-body-item-body">
+                                <h5>หัวเรื่อง</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, atque!</p>
+                                
+                              </div>
+                              <div class="content2-body-item-footer">
+                              
+                              </div> 
+                              <span>readmore</span>
+                            </a>
+                            
+                          </div>  
+                        </div>
+                     </article>
+            }
+    }
+    class Footer extends React.Component {
+      render() {
+              return <footer class="footer-container">
+                        <div class="footer-main container-main">
+                          <div class="footer-body">
+                            <div class="footer-left">
+                              <ul class="footer-menu-list">
+                                <li class="footer-menu-item">Lorem ipsum dolor sit amet.</li>
+                                <li class="footer-menu-item">Lorem ipsum dolor sit amet.</li>
+                                <li class="footer-menu-item">Lorem ipsum dolor sit amet.</li>
+                              </ul>
+                            </div>
+                            <div class="footer-right">
+                              <h2>LOGO</h2>
+                            </div>
+                          </div>
+                        </div>
+                      </footer>
+}
+    }
+    class Article2 extends React.Component {
+            constructor(props) {
+    super(props);
+    this.state = { username: '' };
+    }
+  myChangeHandler = (event) => {
+    this.setState({username: event.target.value});
+  }
+  render() {
+    let header = '';
+    if (this.state.username) {
+      header = <h1>Hello {this.state.username}</h1>;
+    } else {
+      header = '';
+    }
+    return (
+      <form>
+      {header}
+      <p>Enter your name:</p>
+      <input
+        type='text'
+        onChange={this.myChangeHandler}
+      />
+      </form>
+    );
+  }
+}
+        ReactDOM.render(<div><Navbar /><NavbarMobile/><Article /><Content1 /><Content2 /><Footer /></div>, document.getElementById('mydiv'))
+    </script>
+</body>
+
+</html>

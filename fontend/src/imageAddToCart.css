@@ -1,0 +1,32 @@
+.product-image-wrapper {
+    position: absolute;
+    width: 70px;
+    top: -30px;
+    left: -15px;
+}
+
+.product-image-wrapper img {
+    max-width: 100%;
+    object-fit: cover;
+
+}
+
+.add-product-active {
+    display: block;
+    animation: addProductShow .5s forwards;
+}
+
+.add-product-hide {
+    display: none;
+}
+
+@keyframes addProductShow {
+    0% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(0.3);
+    }
+
+}

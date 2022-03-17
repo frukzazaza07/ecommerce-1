@@ -1,0 +1,40 @@
+:root {
+    --font-size-heading-large: 3rem;
+    --font-size-body-medium: 1.7rem;
+    --font-size-body-1_5rem: 1.5rem;
+    --font-size-body-small: 1.2rem;
+}
+
+.promotions-wrapper {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0px 25px;
+}
+
+.grid-column-start-2 {
+    grid-column-start: span 2;
+}
+
+.promotions-main {
+    padding: 1.75rem;
+    max-width: 100%;
+    object-fit: cover;
+    min-height: 30.714285714285715vw;
+    color: #fff;
+    font-weight: 400;
+}
+
+.promotions-body {
+    max-width: 60%;
+    line-height: 1.2;
+}
+
+.promotions-item-header {
+    font-size: var(--font-size-heading-large);
+}
+
+.promotions-item-body {
+    font-size: var(--font-size-body-medium);
+    margin: 10px 0px 35px 0px;
+}

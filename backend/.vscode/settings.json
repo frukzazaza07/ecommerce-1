@@ -1,0 +1,28 @@
+{
+    "editor.formatOnSave": true,
+    "beautify.config": "",
+    "beautify.language": {
+
+        "js": {
+            "type": [
+                "javascript",
+                "react",
+                "json",
+                "jsonc"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautifyrc"
+            ]
+        },
+        "css": [
+            "css",
+            "less",
+            "scss"
+        ],
+        "html": [
+            "htm",
+            "html"
+        ]
+    }
+}
