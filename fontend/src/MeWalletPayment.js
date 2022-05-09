@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import MyFunction from './myLib/MyFunction';
 import axios from "axios";
 import { axiosConfig } from './axiosConfig.js';
-import io from 'socket.io-client'
 import "./meWalletPayment.css"
 import "./cssRoot.css"
 var md5 = require('md5');

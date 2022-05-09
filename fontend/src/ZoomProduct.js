@@ -1,6 +1,5 @@
 
 import { useRef, useState, useEffect, createRef, Component } from "react";
-// github
 import { useSelector, useDispatch } from 'react-redux';// useSelector = เข้าถึงข้อมูล  useDispatch = ส่งออก action การนำ react-redux เพื่อนำ props ไปใช้ทุก component
 import { addProductToCartF, setIsAddProductActive, checkProductSame, loadProductInCart } from './counterSlice' // การนำ react-redux เพื่อนำ props ไปใช้ทุก component
 import { getProductDetail } from './AddProductCart'

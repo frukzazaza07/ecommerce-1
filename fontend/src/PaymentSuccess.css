@@ -1,0 +1,17 @@
+.payment-wrapper {
+    box-shadow: 0 0 10px #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 5px;
+}
+
+.payment-detail-table {
+    padding: 0px 1.5rem;
+    width: 100%;
+}
+
+.payment-footer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+}

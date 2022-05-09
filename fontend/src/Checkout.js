@@ -3,6 +3,7 @@ import InputMask from 'react-input-mask';
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Redirect } from 'react-router-dom'
 import UserIsLogin, { getDataInCookie } from './UserIsLogin.js';
 import Myfunction from "./myLib/MyFunction.js";
 import { fas } from '@fortawesome/fontawesome-free-solid';
@@ -11,6 +12,7 @@ import MeWalletPayment from './MeWalletPayment';
 import MyFunction from './myLib/MyFunction';
 import MobileBankingPayment from './MobileBankingPayment';
 import MobileBankingInputFile from './MobileBankingInputFile';
+import PaymentSuccess from './PaymentSuccess';
 import axios from "axios";
 import CheckLogoutFormLogin from "./CheckLogoutFormLogin";
 import { axiosConfig } from './axiosConfig.js';
@@ -157,6 +159,7 @@ export default function Checkout({ userRef, userData }) {
     const userMeWallet = useSelector((state) => state.counter.meWalletLogin);
     const meWalletType = "2";
     let [meWalletMemberId, setMeWalletMemberId] = useState("");
+    let [showPaymentSuccess, setShowPaymentSuccess] = useState("");
     let [meWalletLoginStatus, setMeWalletLoginStatus] = useState(false);
     let [paymentType, setPaymentType] = useState("");
     let [meWalletFormLoginShow, setMeWalletFormLoginShow] = useState(false);
@@ -164,14 +167,16 @@ export default function Checkout({ userRef, userData }) {
     let [inputPhoneActiveStatus, setInputPhoneActiveStatus] = useState(false);
     const disPatch = useDispatch();
     const phoneFormat = "___-___-____";
-    const socketIoUrl = "http://localhost:3030";
+    // const socketIoUrl = "http://localhost:3030";
+    const socketIoUrl = "https://archer-ecommerce.herokuapp.com";
     const socketIOClient = io(socketIoUrl);
     let meWalletCookie = getDataInCookie("meWalletCookie");
-
+    let [slipPaymentImg, setSlipPaymentImg] = useState("");
     // รอรับข้อมูลเมื่อ server มีการ update
     function responseSocketIo(userRef = "") {
 
         socketIOClient.on(`meWalletLogin-success-${userRef}`, (serverData) => {
+            console.log(serverData)
             disPatch(checkMeWalletLogin(serverData.meWalletData))
             setMeWalletLoginStatus(true);
             const MyFunctions = new MyFunction();
@@ -183,7 +188,6 @@ export default function Checkout({ userRef, userData }) {
     }
 
     useEffect(() => {
-        console.log(productInCart)
         responseSocketIo(userRef);
         if (meWalletCookie !== null) {
             setMeWalletFormLoginShow(false);
@@ -257,6 +261,7 @@ export default function Checkout({ userRef, userData }) {
         let axiosConfigs = axiosConfig(userAccessToken);
 
         let dataForSentToBackend = {
+            paymentType: paymentType,
             meWalletId: meWalletMemberId,
             email: data.shoppingInformation.email,
             firstname: data.shoppingInformation.firstname,
@@ -269,6 +274,7 @@ export default function Checkout({ userRef, userData }) {
             postcode: data.shoppingInformation.postcode,
             phone: data.shoppingInformation.phone.replace(/-|_/gi, ""),
             discountCode: data.shoppingInformation.discountCode,
+            slipPaymentImg: slipPaymentImg,
             shipping: data.shoppingInformation.shipping,
             productInCart: data.productInCart,
             userData: userData,
@@ -296,6 +302,7 @@ export default function Checkout({ userRef, userData }) {
             "product_storage_key_text",
             "product_storage_name",
             "productName",
+            "slipPaymentImg",
         ];
         const validate1 = validateForm(dataForSentToBackend, "shoppingInformation", /[`!#$%^*()+[\]{};'"|,<>~]/, numericIgnore)
         const validate2 = validateForm(dataForSentToBackend.shipping, "", /[`!#$%^&*()_+=[\]{};'"\\|,<>?~]/, numericIgnore)
@@ -312,7 +319,14 @@ export default function Checkout({ userRef, userData }) {
         axiosConfigs.data = { data: JSON.stringify(dataForSentToBackend) };
         axios(axiosConfigs)
             .then((response) => {
-                console.log(response.data);
+                if (response.data.status === true) {
+                    // PaymentSuccess
+                    // setShowPaymentSuccess(response.data.status);
+                    const userId = Buffer.from(userData.id.toString()).toString('base64');
+                    const paymentId = Buffer.from(response.data.data[0].billPaymentId.toString()).toString('base64');
+                    window.location.replace(`http://localhost:3000/payment-success/${userId}/${paymentId}`);
+                    return;
+                }
             })
             .catch((error) => {
                 console.log(error)
@@ -321,9 +335,16 @@ export default function Checkout({ userRef, userData }) {
 
     function validateForm(data, validateType, regexValidate, numericIgnore) {
         const myfunction = new Myfunction()
+        let checkEmpOption = ["discountCode", "detail"]
+        let checkSpecialCharacterOption = []
+        if (paymentType === "1") {
+            checkSpecialCharacterOption.push("slipPaymentImg");
+        } else {
+            checkEmpOption.push("slipPaymentImg");
+        }
         // shoppingInformation
-        const validate1 = myfunction.checkEmpty(data, ["discountCode", "detail"]);
-        const validate2 = myfunction.checkSpecialCharacter(data, [], regexValidate);
+        const validate1 = myfunction.checkEmpty(data, checkEmpOption);
+        const validate2 = myfunction.checkSpecialCharacter(data, checkSpecialCharacterOption, regexValidate);
         const validate3 = myfunction.checkNumeric(data, numericIgnore);
         let errorValidate = [];
         if (validateType === "shoppingInformation") {
@@ -427,20 +448,6 @@ export default function Checkout({ userRef, userData }) {
     }
 
     useEffect(() => {
-        // ถ้าไม่ทำแบบนี้ เวลาเลือกค่าจาก autofill จะไม่ rerender 
-        // และจะไม่ปิด autofill เพราะลูกค้าจะได้เลือกง่ายๆ
-        // เดี๋ยวนั่งไล่ทำให้ครบ
-        // const email = document.getElementById('email');
-        // const firstname = document.getElementById('firstname');
-        // const lastname = document.getElementById('lastname');
-        // const address = document.getElementById('address');
-        // const country = document.getElementById('country');
-        // const province = document.getElementById('province');
-        // const district = document.getElementById('district');
-        // const subDistrict = document.getElementById('subDistrict');
-        // const postcode = document.getElementById('postcode');
-        // const phone = document.getElementById('phone');
-        // const discountCode = document.getElementById('discountCode');
         disPatch(calTotalPriceInCart());
         // responseSocketIo();
         // fetchProductInCartHook();
@@ -452,7 +459,7 @@ export default function Checkout({ userRef, userData }) {
     });
 
     return (
-        <form className="checkout-container">
+        <form className="checkout-container" >
             <div className="checkout-wrapper">
                 <div className="checkout-left">
                     <div className="navigator-detail-container">
@@ -498,7 +505,7 @@ export default function Checkout({ userRef, userData }) {
                                         <label className={`${shoppingInformation.country !== undefined && shoppingInformation.country.length > 0 ? "input-label-active" : "inputPhoneActiveStatus"}`}>Country</label>
                                     </div>
                                     <div className="form-group">
-                                        <input id="province" id="province" className="form-input" type="text" minLength="256" maxLength="255" value={shoppingInformation.province} onChange={(e) => { handleShoppingInformation(e.target.value, "province"); }} />
+                                        <input id="province" className="form-input" type="text" minLength="256" maxLength="255" value={shoppingInformation.province} onChange={(e) => { handleShoppingInformation(e.target.value, "province"); }} />
                                         <label className={`${shoppingInformation.province !== undefined && shoppingInformation.province.length > 0 ? "input-label-active" : "inputPhoneActiveStatus"}`}>Province</label>
                                     </div>
                                 </div>
@@ -618,7 +625,7 @@ export default function Checkout({ userRef, userData }) {
 
                                         <div>
                                             <h3>โอนเงินแล้วอัพโหลดสลิปเลย</h3>
-                                            <MobileBankingInputFile />
+                                            <MobileBankingInputFile setSlipPaymentImg={setSlipPaymentImg} />
                                         </div>
                                     </div>
 

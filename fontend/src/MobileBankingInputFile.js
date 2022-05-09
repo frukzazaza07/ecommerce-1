@@ -10,7 +10,7 @@ import "./mobileBankingInputFile.css"
 import "./cssRoot.css"
 var md5 = require('md5');
 
-export default function MobileBankingInputFile({ totalPayments }) {
+export default function MobileBankingInputFile({ setSlipPaymentImg }) {
     const imageUploadWrap = useRef(null);
     const fileUploadImage = useRef(null);
     const fileUploadContent = useRef(null);
@@ -33,14 +33,19 @@ export default function MobileBankingInputFile({ totalPayments }) {
         // return () => URL.revokeObjectURL(objectUrl)
     }, [selectedFile])
 
+    function handleFileSelect(selected) {
+        setSlipPaymentImg(selected)
+        setSelectedFile(selected)
+    }
+
     async function onSelectFile(e) {
         if (!e.target.files || e.target.files.length === 0) {
-            setSelectedFile(null)
+            handleFileSelect(null);
             return
         }
         // I've kept this example simple by using the first image instead of multiple
         const newImage = await resizeFile(e.target.files[0])
-        setSelectedFile(newImage)
+        handleFileSelect(newImage);
     }
 
     const resizeFile = (file) =>
@@ -86,7 +91,7 @@ export default function MobileBankingInputFile({ totalPayments }) {
                     }
                 </div>
                 <div className="image-title-wrap">
-                    <button type="button" className="remove-image" onClick={(e) => { setSelectedFile(null) }}>ลบรูป</button>
+                    <button type="button" className="remove-image" onClick={(e) => { handleFileSelect(null) }}>ลบรูป</button>
                 </div>
             </div>
         </div >

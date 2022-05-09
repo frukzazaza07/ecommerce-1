@@ -10,6 +10,7 @@ import ZoomProduct from "./ZoomProduct";
 import MeWalletLogin from "./MeWalletLogin";
 import MyCart from "./MyCart";
 import Checkout from "./Checkout";
+import PaymentSuccess from "./PaymentSuccess";
 import Login from "./Login";
 import CalculatorShipping from "./CalculatorShipping";
 import UserIsLogin, { getDataInCookie, refeshTokens } from './UserIsLogin.js';
@@ -111,56 +112,67 @@ export default function App() {
   return (
     // วิธีการใช้ routh <BrowserRouter> <Switch> <Route path="/my-cart"> {component} </Route> </Switch> </BrowserRouter>
     <BrowserRouter>
-      <div>
-        <Switch>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-          <Route path="/home">
-            <MyHeader />
-            <Introduction />
-            <Interests />
-            <Promotions />
-            <PromotionsOfWeek />
-            <ZoomProduct userData={userData} />
-          </Route>
-          <Route path="/my-cart">
-            <MyHeader />
-            <MyCart />
-          </Route>
-          <Route path="/checkout">
-            <MyHeader />
-            {userData !== null && userData.isLogin === true
-              ?
-              <Checkout userRef={userRef} userData={userData} />
-              :
-              <>
-                <Redirect to="/login" />
-              </>
-            }
-
-          </Route>
-          <Route path="/login">
-            {userData !== null && userData.isLogin === true
-              ?
-              <Redirect to="/home" />
-              :
-              <>
-                <MyHeader />
-                <Login />
-              </>
-            }
-          </Route>
+      {/* <div> */}
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+        <Route path="/home">
+          <MyHeader />
+          <Introduction />
+          <Interests />
+          <Promotions />
+          <PromotionsOfWeek />
+          <ZoomProduct userData={userData} />
+        </Route>
+        <Route path="/my-cart">
+          <MyHeader />
+          <MyCart />
+        </Route>
+        <Route path="/checkout">
+          <MyHeader />
           {userData !== null && userData.isLogin === true
             ?
-            <Route Route path="/meWallet-login">
-              <MeWalletLogin userData={userData} userRef={userRef} />
-            </Route>
-            : <Redirect to="/login" />
+            <Checkout userRef={userRef} userData={userData} />
+            :
+            <Redirect to="/login" />
           }
 
-        </Switch>
-      </div>
+        </Route>
+        <Route path="/payment-success/:userId/:paymentId">
+          <MyHeader />
+          {userData !== null && userData.isLogin === true
+            ?
+            <PaymentSuccess />
+            :
+            <PaymentSuccess />
+            // <>
+            //   <Redirect to="/login" />
+            // </>
+          }
+
+        </Route>
+        <Route path="/login">
+          {userData !== null && userData.isLogin === true
+            ?
+            <Redirect to="/home" />
+            :
+            <>
+              <MyHeader />
+              <Login />
+            </>
+          }
+        </Route>
+        {userData !== null && userData.isLogin === true
+          ?
+          <Route Route path="/meWallet-login">
+            <MeWalletLogin userData={userData} userRef={userRef} />
+          </Route>
+          : <Redirect to="/login" />
+        }
+
+      </Switch>
+      {/* </div> */}
     </BrowserRouter >
   );
 }

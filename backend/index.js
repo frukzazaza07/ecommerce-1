@@ -14,7 +14,8 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const classCustomValidation = require('./libary/CustomValidation.js');
 const CustomValidation = new classCustomValidation();
-const domainName = `http://localhost:${port}/`;
+// const domainName = `http://localhost:${port}/`;
+const domainName = `https://archer-ecommerce.herokuapp.com/`;
 const passport = require('passport');
 const request = require('request');
 // qrPayment
@@ -23,6 +24,7 @@ const qrcode = require('qrcode')
 // socket io
 const http = require('http');
 const { json } = require('body-parser');
+const cors = require('cors');
 // const ioS = require("socket.io");
 // const socketIO = ioS();
 
@@ -32,9 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'src')));
 // access folder uploads
 app.use('/uploads', express.static(process.cwd() + '/uploads'))
-app.use(function (req, res, next) {
 
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+// app.use(cors());
+// app.options('*', cors());
+// app.all('/*', function (req, res, next) {
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     next();
@@ -50,30 +56,38 @@ app.use(cookieParser());
 
 
 const server = http.createServer(app);
-const rootServer = "http://localhost:3030";
+// const rootServer = "http://localhost:3030";
+// const rootServer = `http://localhost:${process.env.PORT}`;
+const rootServer = `https://archer-ecommerce.herokuapp.com`;
 // socketio
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3000",
+        // origin: "http://localhost:3000",
+        origin: "*",
         credentials: true
     }
 });
-// const io = socketIO.listen(server);
 
-// start of server
-server.listen(port, function () {
-    console.log('listening on *: ' + port + "\n");
+
+
+
+// start of server localhost
+// server.listen(port, function () {
+//     console.log('listening on *: ' + port + "\n");
+// });
+// heroku
+server.listen(process.env.PORT, function () {
+    console.log('listening on *: ' + process.env.PORT + "\n");
+    // console.log('listening on *: ' + port + "\n");
 });
 // const server = app.listen(port, () => {
 //     console.log(`Server started on port ${port}`);
 // });
 
-
-// var socket = socketIO('http://localhost:3000', { transports: ['websocket', 'polling', 'flashsocket'] });
 // รอการ connect จาก client
 io.on('connection', (client) => {
     // console.log(client.handshake.query);
-    // console.log('user connected')
+    console.log('user connected')
 
     // เมื่อ Client ตัดการเชื่อมต่อ
     client.on('disconnect', () => {
@@ -102,14 +116,19 @@ app.get('/', (req, res) => {
 async function connect() {
     try {
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'ecommerce',
-            connectionLimit: 10000,
+            host: '103.154.94.55',
+            user: 'wavespor_root',
+            password: '$eaZ@8))UDo*',
+            database: 'wavespor_ecommerce',
+            // host: 'localhost',
+            // user: 'root',
+            // password: '',
+            // database: 'ecommerce',
+            // connectionLimit: 10000,
         });
         return connection;
     } catch (e) {
+        console.log("error connect: " + e)
         return false;
     }
 }
@@ -303,11 +322,6 @@ app.get('/api/load-product_storage/:productId/:modelId', async (req, res) => {
     }
 
     const dbCon = await connect();
-    // if (dbCon === false) {
-    //     returnData.status = false;
-    //     returnData.message = "Can't connect database.";
-    //     return res.status(500).send(returnData)
-    // }
     const strSQL = "SELECT DISTINCT\
     product_storage.id ,\
     product_storage.product_storage_name, \
@@ -577,8 +591,7 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
     }
     let returnData = { status: true, data: [], message: "Confirm order successfully." };
     const data = JSON.parse(req.body.data);
-    // console.log(data)
-    // ทำคำนวณของในตะกร้าบันทึกเข้า database โดยดึงข้อมู,จากตาราง product_cart มาบันทึก ไม่เอาจากหน้า fontend 
+    const paymentType = data.paymentType;
     const numericIgnore = [
         "email",
         "firstname",
@@ -602,11 +615,12 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
         "product_storage_key_text",
         "product_storage_name",
         "productName",
+        "slipPaymentImg",
     ];
-    const validate1 = validateForm(data, "shoppingInformation", /[`!#$%^*()+\[\]{};'"\|,<>~]/, numericIgnore)
-    const validate2 = validateForm(data.shipping, "", /[`!#$%^&*()_+\=\[\]{};'"\\|,<>?~]/, numericIgnore)
-    const validate3 = validateForm(data.productInCart, "", /[`!#$%^*()+\[\]{};'"\|,<>~]/, numericIgnore)
-    const validate4 = validateForm(data.userData, "", /[`!#$%^&*()+\=\[\]{};"\\|,<>?~]/, numericIgnore)
+    const validate1 = validateForm(data, "shoppingInformation", /[`!#$%^*()+\[\]{};'"\|,<>~]/, numericIgnore, paymentType)
+    const validate2 = validateForm(data.shipping, "", /[`!#$%^&*()_+\=\[\]{};'"\\|,<>?~]/, numericIgnore, paymentType)
+    const validate3 = validateForm(data.productInCart, "", /[`!#$%^*()+\[\]{};'"\|,<>~]/, numericIgnore, paymentType)
+    const validate4 = validateForm(data.userData, "", /[`!#$%^&*()+\=\[\]{};"\\|,<>?~]/, numericIgnore, paymentType)
     const errorValidate = validate1.concat(
         validate2,
         validate3,
@@ -621,6 +635,7 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
         const dbCon = await connect();
         const cartId = data.productInCart[0].cartId;
         const userId = data.userData.id;
+
         // เดี๋ยวต้องทำ featture เช็คว่าสินค้าในตะกร้าว่า ส่วนลดหมดเขตหรือยังถ้าหมดแล้วต้องอัพเดท
         const totalPriceInCart = await getDetailInCart(cartId);
         const cartTotalSum = totalPriceInCart.cartTotalSum;
@@ -628,6 +643,13 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
         const cartTotalDiscount = totalPriceInCart.cartTotalDiscount;
         let lastInsertIdBillOrder, lastInsertIdTransectionPay, lastInsertId3
         const billSubId = await generateBillSubId();
+        let slipImagePath = ""
+        if (paymentType.toString() === "1") {
+            uploadImageCheck = await uploadImage(data.slipPaymentImg)
+            if (uploadImageCheck.status === false) { res.send({ status: false, data: uploadImageCheck.validation, message: "Can't upload image!" }); return }
+            slipImagePath = uploadImageCheck.pathImage
+            console.log(uploadImageCheck.pathImage)
+        }
         let strSql = "INSERT INTO bill_orders\
             (\
                 bill_order_count,\
@@ -677,37 +699,46 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
             bill_order_id,\
             payment_type_id,\
             transection_id,\
-            bill_payment_by\
+            bill_payment_by,\
+            bill_payment_slip_image\
         )\
-        VALUES(?, ?, ?, ?)\
+        VALUES(?, ?, ?, ?, ?)\
         ";
-        const response4 = await dbCon.query(strSql, [lastInsertIdBillOrder, 2, lastInsertIdTransectionPay, userId]);
+        const response4 = await dbCon.query(strSql, [lastInsertIdBillOrder, paymentType, lastInsertIdTransectionPay, userId, slipImagePath]);
+        const lastInsertIdBillPayment = response4[0].insertId;
 
+        let responseMeWalletObject = { status: false };
 
         // ยิง api ไปยังระบบ me-wallet
-
-        const meWalletForm = {
-            'apiKey': 'JDJ5JDEwJHh6cExYM3BwcVdkcWU1RjFEbHVNdk9aTTNTU3hPT1liV3BWY2dwYi4veUlvL3pFb0wxQTFH',
-            'partnerId': 'MjAyMjAxMTQ0',
-            'memberId': data.meWalletId,
-            'amount': cartTotalSum,
-            'update_url': updatePaymentUrl,
-            'success_url': updatePaymentUrl,
-            'fail_url': updatePaymentUrl,
-            'ref1': ref1Base64,
-            'ref2': 'ref2',
-            'ref3': 'ref3',
+        if (paymentType.toString() === "2") {
+            const meWalletForm = {
+                'apiKey': 'JDJ5JDEwJHh6cExYM3BwcVdkcWU1RjFEbHVNdk9aTTNTU3hPT1liV3BWY2dwYi4veUlvL3pFb0wxQTFH',
+                'partnerId': 'MjAyMjAxMTQ0',
+                'memberId': data.meWalletId,
+                'amount': cartTotalSum,
+                'update_url': updatePaymentUrl,
+                'success_url': updatePaymentUrl,
+                'fail_url': updatePaymentUrl,
+                'ref1': ref1Base64,
+                'ref2': 'ref2',
+                'ref3': 'ref3',
+            }
+            const meWalletUrl = 'http://wave-sport.com/me-wallet/api/payment-order';
+            // const meWalletUrl = 'http://127.0.0.1:8000/api/payment-order';
+            const responseMeWallet = await sendToPaymentMeWallet("POST", meWalletUrl, meWalletForm);
+            responseMeWalletObject = JSON.parse(responseMeWallet);
         }
-        const meWalletUrl = 'http://127.0.0.1:8000/api/payment-order';
-        const responseMeWallet = await sendToPaymentMeWallet("POST", meWalletUrl, meWalletForm);
-        const responseMeWalletObject = JSON.parse(responseMeWallet);
 
-        if (responseMeWalletObject.status !== false) {
+
+        if (responseMeWalletObject.status !== false || paymentType.toString() === "1") {
             strSql = "DELETE FROM `products_sub_cart`\
              WHERE \
              product_cart_id = ?\
             ";
             await dbCon.query(strSql, [cartId]);
+            returnData.data = [{
+                billPaymentId: lastInsertIdBillPayment
+            }];
             returnData.message = "Payment successfully";
         } else {
             returnData.status = false;
@@ -723,7 +754,8 @@ app.post('/api/confirm-order', verifyToken, async (req, res) => {
 async function getPaymentMeWalletToken() {
     const options = {
         'method': 'POST',
-        'url': 'http://127.0.0.1:8000/api/accessToken',
+        'url': 'http://wave-sport.com/me-wallet/api/accessToken',
+        // 'url': 'http://127.0.0.1:8000/api/accessToken',
         'headers': {
             'Accept': 'application/json',
         },
@@ -764,10 +796,19 @@ async function sendToPaymentMeWallet(method, url, formData) {
 
 }
 
-function validateForm(data, validateType, regexValidate, numericIgnore) {
+function validateForm(data, validateType, regexValidate, numericIgnore, paymentType) {
     // shoppingInformation
-    const validate1 = CustomValidation.checkEmpty(data, ["discountCode", "detail"]);
-    const validate2 = CustomValidation.checkSpecialCharacter(data, [], regexValidate);
+
+    let checkEmpOption = ["discountCode", "detail"]
+    let checkSpecialCharacterOption = []
+    if (paymentType.toString() === "1") {
+        checkSpecialCharacterOption.push("slipPaymentImg");
+    } else {
+        checkEmpOption.push("slipPaymentImg");
+    }
+    // shoppingInformation
+    const validate1 = CustomValidation.checkEmpty(data, checkEmpOption);
+    const validate2 = CustomValidation.checkSpecialCharacter(data, checkSpecialCharacterOption, regexValidate);
     const validate3 = CustomValidation.checkNumeric(data, numericIgnore);
     let errorValidate = [];
     if (validateType === "shoppingInformation") {
@@ -962,6 +1003,38 @@ app.post('/api/update-quantity-product-inCart', verifyToken, async (req, res) =>
     });
 });
 
+app.post('/api/get-payment-detail/:userId/:paymentId', verifyToken, async (req, res) => {
+    if (!JSON.parse(req.body.data)) {
+        return res.send({ status: false, data: [], message: "Validate format data error!" });
+    }
+    const data = JSON.parse(req.body.data);
+    if (data.secret !== "juju") return res.send({ status: false, data: [], message: "Secret is valid!" });
+    const userId = Buffer.from(req.params.userId, 'base64').toString('ascii');
+    const paymentId = Buffer.from(req.params.paymentId, 'base64').toString('ascii');
+    let returnData = { status: true, data: [], message: "load data successfully." };
+    jwt.verify(req.token, 'secretkey', async (err, authData) => {
+        if (err) return res.status(403).send({ status: false, data: err, message: "Please send secret key!" });
+
+        const strSql = `SELECT 
+            bill_payment_status,
+            bill_payment_date,
+            bill_order_count,
+            bill_order_total_sum,
+            bill_orders.bill_sub_id
+            FROM bill_payment
+            INNER JOIN bill_orders
+            ON bill_payment.bill_order_id = bill_orders.id
+            WHERE bill_payment.bill_payment_by = ? AND bill_payment.id = ?`;
+        const dbCon = await connect();
+        const [results, fields] = await dbCon.execute(strSql, [userId, paymentId]);
+        returnData.data = results;
+        dbCon.end();
+        return res.send(returnData);
+    });
+});
+
+// api/get-payment-detail/${userId}/${paymentId}
+
 app.post('/api/updatePayment', async (req, res) => {
     if (!JSON.stringify(req.body.data)) {
         console.log("Validate format data error!")
@@ -971,6 +1044,7 @@ app.post('/api/updatePayment', async (req, res) => {
     const data = req.body.data;
     const paymentRef = data.paymentRef;
     const statusPay = data.statusPay;
+    const billUpdatedDate = data.updatedDate;
     const ref1 = data.ref1;
     const validateError1 = CustomValidation.checkSpecialCharacter([paymentRef, statusPay], [], /[`!#$%^&*()_+\[\]{};'"\\|,<>?~]/)
     const validateError2 = CustomValidation.checkString([paymentRef, statusPay]);
@@ -1003,7 +1077,7 @@ app.post('/api/updatePayment', async (req, res) => {
     if (statusPay === "success") {
         billPaymentStatus = 1
     }
-    await dbCon.execute(strSql, [billPaymentStatus, billPaymentStatus, rows[0]["id"]]);
+    await dbCon.execute(strSql, [billPaymentStatus, billUpdatedDate, rows[0]["id"]]);
     dbCon.end();
     return res.send({ status: true, data: [], message: "Update transection successfully" });
     // });
@@ -1029,7 +1103,8 @@ app.post('/api/meWallet-login', verifyToken, async (req, res) => {
             'username': username,
             'password': password,
         }
-        const meWalletUrl = 'http://127.0.0.1:8000/api/meWallet-login';
+        const meWalletUrl = 'http://wave-sport.com/me-wallet/api/meWallet-login';
+        // const meWalletUrl = 'http://127.0.0.1:8000/api/meWallet-login';
         const responseLogin = await sendToPaymentMeWallet("POST", meWalletUrl, meWalletForm);
         const response = JSON.parse(responseLogin);
         if (response.status === true) {
@@ -1401,7 +1476,7 @@ async function uploadImage(imgBase64) {
     const pathImageSuccess = `${pathImageHash}/${pathImage}`;
     const imageName = `${currentYear}${currentMonth}${currentDay}${currentHours}${currentDateObject.minutes}${currentDateObject.seconds}${currentDateObject.milliseconds}`;
     const imageNameBase64 = Buffer.from(imageName).toString('base64') + "." + imageFile.imageType;
-    const maxSizeMB = 3;
+    const maxSizeMB = 5;
     // check path ก่อนสร้าง
     if (!fs.existsSync(pathImageSuccess)) {
         // สร้าง path

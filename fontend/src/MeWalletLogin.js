@@ -9,7 +9,8 @@ import io from 'socket.io-client'
 export default function MeWalletLogin({ userAccessToken, userRef }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const socketIoUrl = "http://localhost:3030";
+    const socketIoUrl = "https://archer-ecommerce.herokuapp.com/";
+    // const socketIoUrl = "http://localhost:3030";
     const socketIOClient = io(socketIoUrl);
 
     const containerStyle = {

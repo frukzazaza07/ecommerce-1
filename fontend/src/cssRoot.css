@@ -15,6 +15,14 @@
     text-align: center
 }
 
+.text-left {
+    text-align: left
+}
+
+.text-right {
+    text-align: right
+}
+
 .font-1rem {
     font-size: 1rem !important;
 }
